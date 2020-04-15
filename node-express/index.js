@@ -1,19 +1,25 @@
-const express = require('express'),
-http = require('http');
+var express = require('express');
+var path = require('path');
+var logger = require('morgan');
+var bodyParser = require('body-parser');
 
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const hostname = 'localhost';
-const port = 3000;
+var hostname = 'localhost';
+var port = 3000;
 
-const app = express();
-app.use(morgan('dev'));
+var dishRouter = require('./routes/dishRouter');
+var leaderRouter = require('./routes/leaderRouter');
+var promoRouter = require('./routes/promoRouter');
+
+var app = express();
+
 app.use(bodyParser.json());
-const dishRouter = require('./routes/dishRouter');
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/dishes', dishRouter);
+app.use('/leaders', leaderRouter);
+app.use('/promotions', promoRouter);
 
-app.use(express.static(__dirname + '/public'));
 
 app.use((req, res, next) => {
 //   console.log(req.headers);
@@ -24,8 +30,6 @@ app.use((req, res, next) => {
 });
 
 
-const server = http.createServer(app);
-
-server.listen(port, hostname, () => {
+app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
