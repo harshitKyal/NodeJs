@@ -8,5 +8,8 @@
     "start": "node index"
   },
   "author": "Harshit kyal",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.9.9"
+  }
 }
