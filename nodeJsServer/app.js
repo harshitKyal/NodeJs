@@ -8,6 +8,8 @@ const url = 'mongodb://localhost:27017/nodeJsServer';
 const connect = mongoose.connect(url);
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+var passport = require('passport');
+var authenticate = require('./authenticate');
 
 connect.then((db) => {
     console.log("Connected correctly to server");
@@ -22,6 +24,8 @@ var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 
 var app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -41,26 +45,22 @@ app.use(session({
   store: new FileStore()
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-function auth (req, res, next) {
-  console.log(req.session);
 
-  if (!req.session.user) {
-      var err = new Error('You are not authenticated!');                     
-      err.status = 401;
-      next(err);
-      return;
+function auth (req, res, next) {
+  console.log(req.user);
+
+  if (!req.user) {
+    var err = new Error('You are not authenticated!');
+    err.status = 403;
+    next(err);
   }
   else {
-      if (req.session.user === 'authenticated') {
-          next();
-      }
-      else {
-          var err = new Error('You are not authenticated!');
-          err.status = 403;
-          next(err);
-      }
+        next();
   }
 }
 app.use(auth);
