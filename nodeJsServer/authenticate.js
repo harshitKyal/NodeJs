@@ -3,7 +3,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('./models/users');
 
 var config = require('./config.js');
-
+var FacebookTokenStrategy = require('passport-facebook-token');
 
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -23,9 +23,39 @@ var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = config.secretKey;
 
+exports.facebookPassport = passport.use(new FacebookTokenStrategy({
+    clientID: config.facebook.clientId,
+    clientSecret: config.facebook.clientSecret
+}, (accessToken, refreshToken, profile, done) => {
+    console.log("inside facebook")
+    User.findOne({facebookId: profile.id}, (err, user) => {
+        if (err) {
+            return done(err, false);
+        }
+        if (!err && user !== null) {
+            console.log("hello")
+            return done(null, user);
+        }
+        else {
+            user = new User({ username: profile.displayName });
+            user.facebookId = profile.id;
+            user.firstname = profile.name.givenName;
+            user.lastname = profile.name.familyName;
+            console.log("user",user)
+            user.save((err, user) => {
+                if (err)
+                    return done(err, false);
+                else
+                    return done(null, user);
+            })
+        }
+    });
+}
+));
+
 exports.verifyAdmin=((req,res,next)=>{
 
-    if(req.user.admin)
+    if(req.user)
         return next();
     else{
         var err = new Error('You are not authorized to perform this operation!');
