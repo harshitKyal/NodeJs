@@ -27,13 +27,11 @@ exports.facebookPassport = passport.use(new FacebookTokenStrategy({
     clientID: config.facebook.clientId,
     clientSecret: config.facebook.clientSecret
 }, (accessToken, refreshToken, profile, done) => {
-    console.log("inside facebook")
     User.findOne({facebookId: profile.id}, (err, user) => {
         if (err) {
             return done(err, false);
         }
         if (!err && user !== null) {
-            console.log("hello")
             return done(null, user);
         }
         else {
@@ -41,7 +39,6 @@ exports.facebookPassport = passport.use(new FacebookTokenStrategy({
             user.facebookId = profile.id;
             user.firstname = profile.name.givenName;
             user.lastname = profile.name.familyName;
-            console.log("user",user)
             user.save((err, user) => {
                 if (err)
                     return done(err, false);
@@ -55,7 +52,7 @@ exports.facebookPassport = passport.use(new FacebookTokenStrategy({
 
 exports.verifyAdmin=((req,res,next)=>{
 
-    if(req.user)
+    if(req.user.admin)
         return next();
     else{
         var err = new Error('You are not authorized to perform this operation!');
