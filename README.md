@@ -48,3 +48,41 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
     $ npm install 
     $ npm start
 
+Project will run on port no- 8888
+
+Overview
+
+main database containers:
+1. # keywordsTableMaster ~730MB
+- info related to keyword generated from reviews in dashboard i.e it is parent or child keyword, it is synonyms or domain specific or review specific keyword with all its associated keywords
+2. # categoryTableMaster ~9GB
+- info related to categories. i.e it is brand or product, its review Count, name, parentId.
+3. # referenceTableMaster ~83GB
+-info related at brand level. i.e keywords and reviews associated with that brand, brand name.
+4. #ReviewTables
+- to store the reviews
+
+
+Api's 
+
+/fetchBrandsCategories
+- to get categories and brand from categoryTableMaster container 
+
+
+/fetchKeywords
+- to fetch the keywords and reviewsCount from referenceTableMaster and keywordsTableMaster
+
+/fetchSentimentPlot
+- 
+router.post('/fetchReviews', fetchReviews.postReviews)
+router.post('/fetchSentimentDistribution', fetchSentimentDistribution.postSentimentDistribution)
+router.post('/countDbData', countDbData.countDbData)
+router.post('/updateReview', updateReview.updateReview)
+router.post('/saveDashboard', saveDashboard.saveDashboard)
+router.post('/getSavedDashboards', getSavedDashboards.getSavedDashboards)
+router.post('/shareDashboard', shareDashboard.shareDashboard)
+router.post('/getSharedDashboards', getSharedDashboards.getSharedDashboards)
+router.post('/saveTopCategoriesBrands', saveTopCategoriesBrands.saveTopCategoriesBrands)
+router.get('/fetchTopCategories', fetchTopCategories.fetchTopCategories)
+router.get('/fetchTopBrands', fetchTopBrands.fetchTopBrands)
+
