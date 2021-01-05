@@ -53,26 +53,24 @@ Project will run on port no- 8888
 Overview
 
 main database containers:
-1. # keywordsTableMaster ~730MB
+1. ### keywordsTableMaster ~730MB
 - info related to keyword generated from reviews in dashboard i.e it is parent or child keyword, it is synonyms or domain specific or review specific keyword with all its associated keywords
-2. # categoryTableMaster ~9GB
+2. ### categoryTableMaster ~9GB
 - info related to categories. i.e it is brand or product, its review Count, name, parentId.
-3. # referenceTableMaster ~83GB
+3. ### referenceTableMaster ~83GB
 -info related at brand level. i.e keywords and reviews associated with that brand, brand name.
-4. #ReviewTables
+4. ### ReviewTables
 - to store the reviews
-
 
 Api's 
 
-/fetchBrandsCategories
+### /fetchBrandsCategories
 - to get categories and brand from categoryTableMaster container 
 
-
-/fetchKeywords
+### /fetchKeywords
 - to fetch the keywords and reviewsCount from referenceTableMaster and keywordsTableMaster
 
-/fetchSentimentPlot
+### /fetchSentimentPlot
 - 
 router.post('/fetchReviews', fetchReviews.postReviews)
 router.post('/fetchSentimentDistribution', fetchSentimentDistribution.postSentimentDistribution)
