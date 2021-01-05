@@ -62,7 +62,7 @@ main database containers:
 4. ### ReviewTables
 - to store the reviews
 
-Api's 
+## Api's 
 
 ### /fetchBrandsCategories
 - to get categories and brand from categoryTableMaster container 
